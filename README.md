@@ -15,4 +15,4 @@ Libraries utilized in the project so far include:
 - time
 - reportlab
 
-- I will describe the reasons behind the selection of each library step by step. If you find the concept intriguing, please let me know!
+I will describe the reasons behind the selection of each library step by step. If you find the concept intriguing, please let me know!

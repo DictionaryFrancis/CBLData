@@ -2,7 +2,13 @@ from lxml import html
 from selenium import webdriver
 import time
 from reportlab.pdfgen import canvas
-import subprocess
+from datetime import date
+from reportlab.lib import colors
+from reportlab.platypus import Table, TableStyle
+from reportlab.lib.pagesizes import letter
+from PIL import Image
+
+pdf_name = str(input('Insert the title for the PDF file: '))
 
 teams_in_the_league = {
     1:'helio',
@@ -34,7 +40,6 @@ if team_name in teams_in_the_league:
     url += f'https://corkbusinessleague.ie/team/{teams_in_the_league[team_name]}/results/'
 
 
-
 driver = webdriver.Chrome()
 driver.get(url)
 
@@ -56,6 +61,13 @@ array_match_visitor = []
 array_team_home = []
 array_team_visitor = []
 x = 0
+team_name_result_array = []
+team_name_result_h1 = tree.xpath(f'/html/body/div[3]/div[3]/div/div/div/h1/text()')
+team_name_result_span = tree.xpath(f'/html/body/div[3]/div[3]/div/div/div/h1/span/text()')
+team_name_result_array.append(team_name_result_h1[0].strip("['']"))
+team_name_result_array.append(team_name_result_span[0])
+
+
 for i in range(1, 6):
     # test = tree.xpath('/html/body/div[3]/div[3]/div/div/div/h1/text()')
     match_home = tree.xpath(f'//*[@id="DataTables_Table_0"]/tbody/tr[{i}]/td/div/div/div[3]/a/span[{1}]/text()')
@@ -73,22 +85,45 @@ for i in range(1, 6):
 #print(team_home[0].strip("['']"))
 def create_pdf(file_path):
     c = canvas.Canvas(file_path)
-    c.drawString(10, 10, "Welcome to it!")
-    lines = [
-        f"{team_home}   {match_home} X  {team_visitor}   {match_visitor}"
-            for match_home, match_visitor, team_home, team_visitor in zip(array_match_home, array_match_visitor, array_team_home, array_team_visitor)
+
+    image_path = "Helio-picture.png"  # Replace with the actual path to your image
+    x_position = 255
+    y_position = 655
+    image_width = 100
+    image_height = 100
+    c.drawImage(image_path,x_position,y_position,width=image_width,height=image_height)
+    c.drawString(105,600, f"LAST 5 RESULTS : {team_name_result_array[0]}{team_name_result_array[1]}")
+    c.drawString(95, 595, "_______________________________________________________________")
+
+    # Create a table style
+    style = [
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('ALIGN', (1, 0), (-1, -1), 'CENTER'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
     ]
-    y = 750
 
-    for line in lines:
-        c.drawString(100, y, line)
+    data = [['', 'HOME', '', 'VISITOR']]
 
-        y -= 20
-    # c.showPage()
+
+    for match_home, match_visitor, team_home, team_visitor in zip(array_match_home, array_match_visitor, array_team_home, array_team_visitor):
+        data.append([match_home,team_home, match_visitor, team_visitor])
+
+    # Create the table
+    table = Table(data, colWidths=[20, 200, 20, 200])
+
+    # Apply the table style
+    table.setStyle(TableStyle(style))
+
+    # Draw the table on the canvas
+    table.wrapOn(c, 85, 350)
+    table.drawOn(c, 85, 450)
+
     c.save()
 
 
-pdf_file = f"{team_name}.pdf"
+pdf_file = f"{pdf_name}--{date.today()}.pdf"
 
 create_pdf(pdf_file)
 print(f'pdf created {pdf_file}!')

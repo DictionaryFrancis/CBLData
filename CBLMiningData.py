@@ -181,21 +181,21 @@ def create_pdf(file_path):
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
     ]
 
-    data = [['', 'HOME', '', 'VISITOR']]
+    data = [['HOME','','', '', 'VISITOR']]
 
 
     for match_home, match_visitor, team_home, team_visitor in zip(array_match_home, array_match_visitor, array_team_home, array_team_visitor):
-        data.append([match_home,team_home, match_visitor, team_visitor])
+        data.append([team_home, match_home, 'x', match_visitor, team_visitor])
 
     # Create the table
-    table = Table(data, colWidths=[20, 200, 20, 200])
+    table = Table(data, colWidths=[200, 20, 20, 20, 200])
 
     # Apply the table style
     table.setStyle(TableStyle(style))
 
     # Draw the table on the canvas
-    table.wrapOn(c, 85, 350)
-    table.drawOn(c, 85, 450)
+    table.wrapOn(c, 75, 350)
+    table.drawOn(c, 75, 450)
 
     # SECOND TABLE
      # Create a table style
@@ -212,7 +212,7 @@ def create_pdf(file_path):
 
 
     for name, position, matches, win, draw, loss in zip(array_club_name, array_club_position, array_club_matches,array_club_win,array_club_draw,array_club_loss):
-        if name == target_club_key:
+        if name == 'Helio Inter Cork' or name == target_club_key:
              data_position.append([name,position,matches,win,draw,loss])
 
     # Create the table

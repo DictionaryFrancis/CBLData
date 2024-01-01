@@ -8,6 +8,8 @@ The primary objective is to showcase the power and usefulness of data mining, il
 
 The main functionality involves generating PDF reports containing the latest results of teams. This enables teams to review recent outcomes, compare victories and losses with other teams, and evaluate their own performance.
 
+[alt text](gif-demonstration.gif)
+
 Libraries utilized in the project so far include:
 
 - lxml

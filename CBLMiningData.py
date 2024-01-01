@@ -5,8 +5,7 @@ from reportlab.pdfgen import canvas
 from datetime import date
 from reportlab.lib import colors
 from reportlab.platypus import Table, TableStyle
-from reportlab.lib.pagesizes import letter
-from PIL import Image
+
 
 pdf_name = str(input('Insert the title for the PDF file: '))
 
@@ -43,7 +42,6 @@ if team_name in teams_in_the_league:
 
 # Open first Window
 driver = webdriver.Chrome()
-
 
 ####
 # Team table position
@@ -121,17 +119,10 @@ for i in range(1, num_rows + 1):
 
 # Print the collected data (for verification)
 for name, position, matches, win, draw, loss, goalsFor, goalsAgainst in zip(array_club_name, array_club_position, array_club_matches,array_club_win,array_club_draw,array_club_loss, array_club_goals_for,array_club_goals_against):
-    # print(f"Club: {name}, Position: {position}, Matches : {matches}, Win : {win}, Draw : {draw}, Loss : {loss}")
-
     if name == target_club_key:
          print(f'{name},{position},{matches},{win},{goalsFor}, {goalsAgainst}')
 
 ####
-
-
-
-
-
 
 driver.get(url)
 time.sleep(1)
@@ -141,7 +132,6 @@ page_source = driver.page_source
 
 driver.quit()
 
-# webbrowser.open('https://corkbusinessleague.ie/team/helio/results/')
 tree = html.fromstring(page_source)
 
 match_home = ''
@@ -158,7 +148,6 @@ x = 0
 ##
 
 for i in range(1, 6):
-    # test = tree.xpath('/html/body/div[3]/div[3]/div/div/div/h1/text()')
     match_home = tree.xpath(f'//*[@id="DataTables_Table_0"]/tbody/tr[{i}]/td/div/div/div[3]/a/span[{1}]/text()')
     match_visitor = tree.xpath(f'//*[@id="DataTables_Table_0"]/tbody/tr[{i}]/td/div/div/div[3]/a/span[3]/text()')
     team_home = tree.xpath(f'//*[@id="DataTables_Table_0"]/tbody/tr[{i}]/td/div/div/div[1]/div/h5/text()')

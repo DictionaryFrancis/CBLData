@@ -5,6 +5,7 @@ from reportlab.pdfgen import canvas
 from datetime import date
 from reportlab.lib import colors
 from reportlab.platypus import Table, TableStyle
+import os
 
 
 pdf_name = str(input('Insert the title for the PDF file: '))
@@ -118,9 +119,9 @@ for i in range(1, num_rows + 1):
     # ... Append other pieces of information to their respective arrays
 
 # Print the collected data (for verification)
-for name, position, matches, win, draw, loss, goalsFor, goalsAgainst in zip(array_club_name, array_club_position, array_club_matches,array_club_win,array_club_draw,array_club_loss, array_club_goals_for,array_club_goals_against):
-    if name == target_club_key:
-         print(f'{name},{position},{matches},{win},{goalsFor}, {goalsAgainst}')
+# for name, position, matches, win, draw, loss, goalsFor, goalsAgainst in zip(array_club_name, array_club_position, array_club_matches,array_club_win,array_club_draw,array_club_loss, array_club_goals_for,array_club_goals_against):
+#     if name == target_club_key:
+#          print(f'{name},{position},{matches},{win},{goalsFor}, {goalsAgainst}')
 
 ####
 
@@ -272,5 +273,9 @@ def create_pdf(file_path):
 
 pdf_file = f"{pdf_name}--{date.today()}.pdf"
 
+
+
 create_pdf(pdf_file)
 print(f'pdf created {pdf_file}!')
+
+os.system(pdf_file)
